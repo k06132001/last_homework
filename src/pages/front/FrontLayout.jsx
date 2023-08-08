@@ -1,63 +1,30 @@
 import { Outlet } from "react-router-dom";
-
+import Navbar from "../../components/Navbar";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 function FrontLayout() {
+  const [cartData, setCartData] = useState({});
+
+  const getCart = async () => {
+    try {
+      const res = await axios.get(
+        `/v2/api/${import.meta.env.VITE_API_PATH}/cart`
+      );
+      console.log("購物車內容:", res);
+      setCartData(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    getCart();
+  }, []);
   return (
     <>
-      <div className="bg-white sticky-top">
-        <div className="container">
-          <nav className="navbar px-0 navbar-expand-lg navbar-light bg-white">
-            <a
-              className="navbar-brand position-absolute"
-              href="./index.html"
-              style={{
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                top: "50%",
-              }}
-            >
-              Navbar
-            </a>
-            <button
-              className="navbar-toggler"
-              type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
-              aria-controls="navbarNav"
-              aria-expanded="false"
-              aria-label="Toggle navigation"
-            >
-              <span className="navbar-toggler-icon"></span>
-            </button>
-            <div
-              className="collapse navbar-collapse bg-white custom-header-md-open"
-              id="navbarNav"
-            >
-              <ul className="navbar-nav">
-                <li className="nav-item active">
-                  <a className="nav-link ps-0" href="./product.html">
-                    Lorem ipsum
-                  </a>
-                </li>
-                <li className="nav-item">
-                  <a className="nav-link" href="./detail.html">
-                    Lorem ipsum
-                  </a>
-                </li>
-              </ul>
-            </div>
-            <div className="d-flex">
-              <a href="#">
-                <i className="fas fa-heart me-5"></i>
-              </a>
-              <a href="./cart-2.html">
-                <i className="fas fa-shopping-cart"></i>
-              </a>
-            </div>
-          </nav>
-        </div>
-      </div>
-      <Outlet />
+      <Navbar cartData={cartData} />
+      <Outlet context={{ getCart, cartData }} />
       <div className="bg-dark">
         <div className="container">
           <div className="d-flex align-items-center justify-content-between text-white py-4">
