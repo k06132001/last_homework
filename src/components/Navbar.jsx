@@ -14,7 +14,7 @@ function Navbar({ cartData }) {
               top: "50%",
             }}
           >
-            狄倫的日式餐點
+            狄倫的剩食交易所
           </NavLink>
           <button
             className="navbar-toggler"

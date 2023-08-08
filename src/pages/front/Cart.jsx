@@ -1,6 +1,6 @@
 import axios from "axios";
 import { useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 
 function Cart() {
   const { cartData, getCart } = useOutletContext();
@@ -33,6 +33,7 @@ function Cart() {
         data
       );
       console.log("刪除購物車:", res);
+      setLoadingItem(loadingItems.filter((item) => item !== item.id));
       getCart();
     } catch (error) {
       console.log(error);
@@ -79,6 +80,7 @@ function Cart() {
                       className="form-select"
                       id=""
                       value={item.qty}
+                      disabled={loadingItems.includes(item.id)}
                       onChange={(e) => {
                         updateCartItem(item, e.target.value * 1);
                       }}
@@ -101,12 +103,12 @@ function Cart() {
             <p className="mb-0 h4 fw-bold">總金額</p>
             <p className="mb-0 h4 fw-bold">NT${cartData.final_total}</p>
           </div>
-          <a
-            href="./checkout.html"
+          <Link
+            to="/checkout"
             className="btn btn-dark w-100 mt-4 rounded-0 py-3"
           >
             確認餐點正確
-          </a>
+          </Link>
         </div>
       </div>
     </div>

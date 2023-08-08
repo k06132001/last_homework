@@ -2,24 +2,29 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import Pagination from "../../components/Pagination";
+import Loading from "../../components/Loading";
 
 function Products() {
   const [products, setProducts] = useState([]);
   const [pagination, setPagination] = useState({});
+  const [isLoading, setIsLoading] = useState(false);
 
   const getProducts = async (page = 1) => {
+    setIsLoading(true);
     const productRes = await axios.get(
       `/v2/api/${import.meta.env.VITE_API_PATH}/products?page=${page}`
     );
     console.log(productRes);
     setProducts(productRes.data.products);
     setPagination(productRes.data.pagination);
+    setIsLoading(false);
   };
   useEffect(() => {
     getProducts(1);
   }, []);
   return (
     <div className="container mt-md-5 mt-3 mb-7">
+      <Loading isLoading={isLoading} />
       <div className="row">
         {products.map((product) => {
           return (

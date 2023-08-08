@@ -2,6 +2,7 @@ import { Outlet } from "react-router-dom";
 import Navbar from "../../components/Navbar";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import Head from "../../components/Head";
 
 function FrontLayout() {
   const [cartData, setCartData] = useState({});
